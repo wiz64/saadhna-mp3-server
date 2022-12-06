@@ -1,0 +1,4 @@
+node_modules
+songs
+compiled
+*.log
