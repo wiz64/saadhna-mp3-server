@@ -55,18 +55,18 @@ router.get('/status', function(req, res, next) {
     }
     else if(id in global.clist){
         // send json message
-        if(global.clist[id][1]) {
-            res.json({status: 'Compiling', size: global.clist[id][1]});
+        if(global.clist[id][1].size) {
+            res.json({status: 'Compiling', size: global.clist[id][1].size});
         } else {
-        res.json({status: 'Compiling'});}
+        res.json({status: 'Compiling', size: "Null"});}
         
     }
     else if(id in global.dlist){
         // send json message
-        if(global.dlist[id].size) {
-            res.json({status: 'Done', size: global.dlist[id][1]});
+        if(global.dlist[id][1].size) {
+            res.json({status: 'Done',url: '/download?id='+global.dlist[id][0], size: global.dlist[id][1].size});
         } else {
-        res.json({status: 'Done', url: '/download?id='+id});}
+        res.json({status: 'Done', url: '/download?id='+global.dlist[id][0], size : "Null"});}
     }
     else if(id in global.faillist){
         // send json message
@@ -81,17 +81,25 @@ router.get('/status', function(req, res, next) {
 router.get('/download', limiter, function(req, res, next) {
     // get id
     var id = req.query.id;
+    
     if(!id){
         // send json message
         res.json({status: 'No id provided'});
         return 0;
     }
-    console.log('download: ' + id);
+    console.log("Download Request: \n ----- ",global.dlist[id], req.ip);
     // find id in queue lists
     if(id in global.dlist){
         // send file pipe
         var file = path.join(__dirname, '../compiled/' + id + '.mp3');
+        if(global.dlist[id][1].size) {
+        var fileDetails = global.dlist[id][1];
+        // download with fileName
+        
+        res.download(file, fileDetails.fileName)
+        } else {
         res.download(file);
+        }
     }
     else{
         // send json message

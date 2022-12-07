@@ -40,10 +40,15 @@ function Song(data) {
                         var coverSize = fs.statSync(coverPath).size;
                         var totalSize = songSize + coverSize;
                         // convert to MB 2 decimal places
-                        totalSize = (totalSize / 1000000).toFixed(2);
+                        var totalSize = (totalSize / 1048576).toFixed(2);
                         console.log("Total Size: "+totalSize);
+                        var fileDetails = {
+                            size: totalSize,
+                            fileName : this.title+" - "+this.artist+".mp3",
+                        
+                        };
                         if(global.clist[this.id]){
-                        global.clist[this.id] = [this.id,totalSize]
+                        global.clist[this.id] = [this.id,fileDetails]
                           console.log(global.clist[this.id]);
                         }
                         // compile song
@@ -84,7 +89,7 @@ function Song(data) {
                         .on('end', function() {
                             var id = song_id
                             console.log('Processing finished ! ', id);
-                            global.dlist[id] = [id,totalSize];
+                            global.dlist[id] = [id,fileDetails];
                             
                             delete global.clist[id];
                             fs.unlinkSync(songPath);
