@@ -3,9 +3,16 @@ const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('./ffmpeg.js')
+const he = require('he');
 // song constructor
 
 function Song(data) {
+    // html special chars decode if name, album, artist, copyright contains '&'
+        if(data.name.includes('&')){data.name = he.decode(data.name);}
+        if(data.album.name.includes('&')){data.album.name = he.decode(data.album.name);}
+        if(data.primaryArtists.includes('&')){data.primaryArtists = he.decode(data.primaryArtists);}
+        if(data.copyright.includes('&')){data.copyright = he.decode(data.copyright);}
+
     this.id = data.id;
     this.title = data.name;
     this.artist = data.primaryArtists;
@@ -20,6 +27,7 @@ function Song(data) {
     this.date = data.year;
     this.compile =  function() {
         // compile song
+        
         // download song and cover
         // download song
         var songPath = path.join(__dirname, '../songs', this.id + '.mp4');

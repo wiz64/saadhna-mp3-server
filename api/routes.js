@@ -95,7 +95,8 @@ router.get('/download', limiter, function(req, res, next) {
         if(global.dlist[id][1].size) {
         var fileDetails = global.dlist[id][1];
         // download with fileName
-        
+        // convert " to '
+        fileDetails.fileName = fileDetails.fileName.replace(/"/g, "'");
         res.download(file, fileDetails.fileName)
         } else {
         res.download(file);
