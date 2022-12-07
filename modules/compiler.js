@@ -31,8 +31,23 @@ function Song(data) {
                 // download cover
                 var coverPath = path.join(__dirname, '../songs', this.id + '.jpg');
                 var coverWriter = fs.createWriteStream(coverPath);
-                axios.get(this.cover, {responseType: 'stream'}).then(response => {
-                    response.data.pipe(coverWriter);
+                axios.get(this.cover, {responseType: 'stream'})
+                // if error
+                .catch(error => {
+                    console.log("Cover download failed");
+                        // download https://i.ibb.co/Kb7nMgQ/saavn-cli.jpg cover and pipe to coverWriter
+                        axios.get('https://i.ibb.co/Kb7nMgQ/saavn-cli.jpg', {responseType: 'stream'}).then(response => {
+                            response.data.pipe(coverWriter);
+                })})
+                .then(response => {
+                    // if response is not 200
+                    if((!response) || response.status != 200){
+                        console.log("Cover download failed");
+                        // download https://i.ibb.co/Kb7nMgQ/saavn-cli.jpg cover and pipe to coverWriter
+                        axios.get('https://i.ibb.co/Kb7nMgQ/saavn-cli.jpg', {responseType: 'stream'}).then(response => {
+                            response.data.pipe(coverWriter);
+                    });}
+                    else { response.data.pipe(coverWriter); }
                     coverWriter.on('finish', () => {
                         coverWriter.close();
                         // calculate total file size = song + cover
