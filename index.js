@@ -2,10 +2,11 @@
 var express = require('express');
 var app = express();
 const fs = require('fs');
-
+const path = require('path');
 global.app_config = {
     serverless : true
 }
+global.compile_dir = path.join(__dirname) + '/compiled/';
 var PORT = 3000;
 var api =  require('./api/routes.js');
 // all cors
@@ -30,7 +31,10 @@ app.listen(PORT, function () {
     // create compiled and songs folder
     fs.mkdirSync('./compiled');
     fs.mkdirSync('./songs');
-
+    
+    if (fs.existsSync('./dlist.json')) {
+        global.dlist = JSON.parse(fs.readFileSync('./dlist.json'));
+    }
 });
     
 module.exports = app;

@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('./ffmpeg.js')
 const he = require('he');
+const telegram_mod = require('./telegram.js')
 // song constructor
 
 function Song(data) {
@@ -26,6 +27,10 @@ function Song(data) {
     this.downloadUrl = data.downloadUrl[4].link;
     this.date = data.year;
     this.compile =  function() {
+        if(this.id in dlist){
+            console.log(this.id + ' - already compiled');
+            return 1;
+        }
         // compile song
         
         // download song and cover
@@ -112,14 +117,23 @@ function Song(data) {
                         .on('end', function() {
                             var id = song_id
                             console.log('Processing finished ! ', id);
-                            global.dlist[id] = [id,fileDetails];
                             
+                            // save file
+                            async function saveFile(compiledPath, id) {
+                            var file_id = await telegram_mod.saveFile(compiledPath, id); 
+                            fileDetails.file_id = file_id;
+                            global.dlist[id] = [id,fileDetails];
                             delete global.clist[id];
                             fs.unlinkSync(songPath);
                             fs.unlinkSync(coverPath);
+                            // save dlist to file dlist.json
+                            fs.writeFileSync(path.join(__dirname, '../dlist.json'), JSON.stringify(global.dlist));
+                            }
+                            saveFile(compiledPath, id);
+                            
+                            
                         })
                         .save(compiledPath);
-
                     });
                 });
                             
