@@ -137,7 +137,7 @@ router.get('/download', limiter, function(req, res, next) {
                             // download with fileName
                             // convert " to '
                             fileDetails.fileName = fileDetails.fileName.replace(/"/g, "'");
-                            res.download(file, fileDetails.fileName)}
+                            res.download(global.compile_dir + id + '.mp3', fileDetails.fileName)}
                         });
                     }
                     );
