@@ -12,7 +12,7 @@ bot.launch()
 async function saveFile(file_path) {
     // send file to group chat and return the file id
     var file_id = await bot.telegram.sendDocument('-835379521', { source: file_path}).then((result) => {
-        return result.audio.file_id;
+        return result.document.file_id;
     });
     return file_id;
 }
