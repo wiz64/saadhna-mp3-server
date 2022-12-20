@@ -3,6 +3,16 @@ Live MP3 Metadata Compiler, Storage and Server
 
 Compiles requested Tracks with Cover, Metadata and servers them on-the-fly.
 
+edit `.env` file
+```
+TELEGRAM_TOKEN = 123456:your_telegram_token
+```
+then run on repit/VPS
+```
+npm install
+node index.js
+```
+
 ### Endpoints
 - #### Add
 ```
