@@ -7,7 +7,7 @@ edit `.env` file
 ```
 TELEGRAM_TOKEN = 123456:your_telegram_token
 ```
-then run on repit/VPS
+then run on terminal
 ```
 npm install
 node index.js
