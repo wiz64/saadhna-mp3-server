@@ -160,7 +160,7 @@ async function compile(id) {
         var song = new Song(data);
         console.log(song);
         // console.log( all list )
-        console.log(global.qlist, global.greenlist, global.clist, global.dlist, global.faillist);
+        //console.log(global.qlist, global.greenlist, global.clist, global.dlist, global.faillist);
         // send to greenlist and remove from qlist
         global.greenlist[id] = id;
         delete global.qlist[id];
