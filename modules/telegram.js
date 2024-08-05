@@ -11,7 +11,7 @@ bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 bot.launch()
 async function saveFile(file_path) {
     // send file to group chat and return the file id
-    var file_id = await bot.telegram.sendDocument('-4257950247', { source: file_path}).then((result) => {
+    var file_id = await bot.telegram.sendDocument(process.env.GROUP_ID, { source: file_path}).then((result) => {
       if (result.document){return result.document.file_id}
       if (result.audio){return result.audio.file_id}
     });
