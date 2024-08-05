@@ -140,7 +140,7 @@ function Song(data) {
         
             return "hello"; });});
 }}
-var api_url = "https://jiosaavn-api-privatecvc2.vercel.app";
+var api_url = "https://jiosaavn-api-privatecvc2.vercel.app/songs";
 async function compile(id) {
     // call api with id
     var url = api_url + "/?id=" + id;
